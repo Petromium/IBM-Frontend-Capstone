@@ -4,7 +4,6 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   Avatar,
@@ -24,6 +23,11 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { NavigationBar } from '../components/NavigationBar';
+
+// Card heights for consistency
+const FEATURE_CARD_HEIGHT = 280;
+const SPECIALTY_CARD_HEIGHT = 140;
+const TESTIMONIAL_CARD_HEIGHT = 220;
 
 // Features data
 const features = [
@@ -134,8 +138,15 @@ export const LandingPage: React.FC = () => {
         />
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+              gap: 4,
+              alignItems: 'center',
+            }}
+          >
+            <Box>
               <Typography
                 variant="h2"
                 component="h1"
@@ -207,32 +218,30 @@ export const LandingPage: React.FC = () => {
                   <Typography variant="body2">24/7 Support</Typography>
                 </Box>
               </Box>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Box
                 sx={{
+                  width: { xs: 280, md: 400 },
+                  height: { xs: 280, md: 400 },
+                  borderRadius: '50%',
+                  bgcolor: 'rgba(255,255,255,0.15)',
                   display: 'flex',
-                  justifyContent: 'center',
                   alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                <Box
-                  sx={{
-                    width: { xs: 280, md: 400 },
-                    height: { xs: 280, md: 400 },
-                    borderRadius: '50%',
-                    bgcolor: 'rgba(255,255,255,0.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <LocalHospital sx={{ fontSize: { xs: 120, md: 180 }, opacity: 0.9 }} />
-                </Box>
+                <LocalHospital sx={{ fontSize: { xs: 120, md: 180 }, opacity: 0.9 }} />
               </Box>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
@@ -245,25 +254,32 @@ export const LandingPage: React.FC = () => {
             borderRadius: 3,
           }}
         >
-          <Grid container spacing={3}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'repeat(2, 1fr)',
+                md: 'repeat(4, 1fr)',
+              },
+              gap: 3,
+            }}
+          >
             {stats.map((stat, index) => (
-              <Grid item xs={6} md={3} key={index}>
-                <Box sx={{ textAlign: 'center' }}>
-                  <Typography
-                    variant="h3"
-                    fontWeight={700}
-                    color="primary.main"
-                    sx={{ fontSize: { xs: '2rem', md: '2.5rem' } }}
-                  >
-                    {stat.value}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {stat.label}
-                  </Typography>
-                </Box>
-              </Grid>
+              <Box key={index} sx={{ textAlign: 'center' }}>
+                <Typography
+                  variant="h3"
+                  fontWeight={700}
+                  color="primary.main"
+                  sx={{ fontSize: { xs: '2rem', md: '2.5rem' } }}
+                >
+                  {stat.value}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {stat.label}
+                </Typography>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Paper>
       </Container>
 
@@ -278,49 +294,61 @@ export const LandingPage: React.FC = () => {
           </Typography>
         </Box>
 
-        <Grid container spacing={4}>
+        {/* Features Grid - CSS Grid for consistent sizing */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(4, 1fr)',
+            },
+            gap: 3,
+          }}
+        >
           {features.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card
-                sx={{
-                  height: '100%',
-                  textAlign: 'center',
-                  p: 2,
-                  transition: 'all 0.3s',
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                    boxShadow: 6,
-                  },
-                }}
-              >
-                <CardContent>
-                  <Box
-                    sx={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      bgcolor: 'primary.light',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      mx: 'auto',
-                      mb: 2,
-                      color: 'primary.main',
-                    }}
-                  >
-                    {feature.icon}
-                  </Box>
-                  <Typography variant="h6" fontWeight={600} gutterBottom>
-                    {feature.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {feature.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <Card
+              key={index}
+              sx={{
+                height: FEATURE_CARD_HEIGHT,
+                textAlign: 'center',
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'all 0.3s',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  boxShadow: 6,
+                },
+              }}
+            >
+              <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    bgcolor: 'primary.light',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mx: 'auto',
+                    mb: 2,
+                    color: 'primary.main',
+                  }}
+                >
+                  {feature.icon}
+                </Box>
+                <Typography variant="h6" fontWeight={600} gutterBottom>
+                  {feature.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {feature.description}
+                </Typography>
+              </CardContent>
+            </Card>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* Specialties Section */}
@@ -335,35 +363,49 @@ export const LandingPage: React.FC = () => {
             </Typography>
           </Box>
 
-          <Grid container spacing={3}>
+          {/* Specialties Grid - CSS Grid for consistent sizing */}
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'repeat(2, 1fr)',
+                sm: 'repeat(3, 1fr)',
+                md: 'repeat(6, 1fr)',
+              },
+              gap: 3,
+            }}
+          >
             {specialties.map((specialty, index) => (
-              <Grid item xs={6} sm={4} md={2} key={index}>
-                <Paper
-                  sx={{
-                    p: 3,
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s',
-                    '&:hover': {
-                      transform: 'scale(1.05)',
-                      boxShadow: 4,
-                    },
-                  }}
-                  onClick={() => navigate('/appointments')}
-                >
-                  <Typography variant="h3" sx={{ mb: 1 }}>
-                    {specialty.icon}
-                  </Typography>
-                  <Typography variant="subtitle2" fontWeight={600}>
-                    {specialty.name}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {specialty.doctors} Doctors
-                  </Typography>
-                </Paper>
-              </Grid>
+              <Paper
+                key={index}
+                sx={{
+                  height: SPECIALTY_CARD_HEIGHT,
+                  p: 3,
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    boxShadow: 4,
+                  },
+                }}
+                onClick={() => navigate('/appointments')}
+              >
+                <Typography variant="h3" sx={{ mb: 1 }}>
+                  {specialty.icon}
+                </Typography>
+                <Typography variant="subtitle2" fontWeight={600}>
+                  {specialty.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {specialty.doctors} Doctors
+                </Typography>
+              </Paper>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -378,33 +420,65 @@ export const LandingPage: React.FC = () => {
           </Typography>
         </Box>
 
-        <Grid container spacing={4}>
+        {/* Testimonials Grid - CSS Grid for consistent sizing */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: 'repeat(3, 1fr)',
+            },
+            gap: 4,
+          }}
+        >
           {testimonials.map((testimonial, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Card sx={{ height: '100%', p: 1 }}>
-                <CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>
-                      {testimonial.avatar}
-                    </Avatar>
-                    <Box>
-                      <Typography variant="subtitle1" fontWeight={600}>
-                        {testimonial.name}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        {testimonial.role}
-                      </Typography>
-                    </Box>
+            <Card
+              key={index}
+              sx={{
+                height: TESTIMONIAL_CARD_HEIGHT,
+                p: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'all 0.3s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 4,
+                },
+              }}
+            >
+              <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>
+                    {testimonial.avatar}
+                  </Avatar>
+                  <Box>
+                    <Typography variant="subtitle1" fontWeight={600}>
+                      {testimonial.name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {testimonial.role}
+                    </Typography>
                   </Box>
-                  <Rating value={testimonial.rating} readOnly size="small" sx={{ mb: 2 }} />
-                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                    "{testimonial.text}"
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+                </Box>
+                <Rating value={testimonial.rating} readOnly size="small" sx={{ mb: 2 }} />
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    lineHeight: 1.7,
+                    flex: 1,
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                  }}
+                >
+                  "{testimonial.text}"
+                </Typography>
+              </CardContent>
+            </Card>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* CTA Section */}
@@ -462,4 +536,3 @@ export const LandingPage: React.FC = () => {
 };
 
 export default LandingPage;
-
